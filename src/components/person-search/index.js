@@ -1,1 +1,1 @@
-export * as PersonSearch from './person-search';
+export { PersonSearch } from './person-search';

@@ -12,7 +12,7 @@ twindSetup({
   hash: true,
 });
 
-export default function PersonSearch() {
+export function PersonSearch() {
   const [searchString, setSearchString] = useState('');
   const [searchType, setSearchType] = useState('coordinator');
   const [showInactives, setShowInactives] = useState(false);
