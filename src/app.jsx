@@ -1,4 +1,4 @@
-import PersonSearch from './components/person-search';
+import PersonSearch from '../lib/components/person-search';
 
 export function App() {
   return (
