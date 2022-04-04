@@ -87,8 +87,8 @@ var buildMediaQuery = (screen) => {
   }), ",");
 };
 var cyrb32 = (value) => {
-  for (var h = 9, index2 = value.length; index2--; ) {
-    h = Math.imul(h ^ value.charCodeAt(index2), 1597334677);
+  for (var h = 9, index = value.length; index--; ) {
+    h = Math.imul(h ^ value.charCodeAt(index), 1597334677);
   }
   return "tw-" + ((h ^ h >>> 9) >>> 0).toString(36);
 };
@@ -213,13 +213,13 @@ var buildStatics = (strings) => {
   if (!statics) {
     let slowModeIndex = NaN;
     let buffer = "";
-    statics = strings.map((token, index2) => {
-      if (slowModeIndex !== slowModeIndex && (token.slice(-1) == "[" || includes(":-(", (strings[index2 + 1] || "")[0]))) {
-        slowModeIndex = index2;
+    statics = strings.map((token, index) => {
+      if (slowModeIndex !== slowModeIndex && (token.slice(-1) == "[" || includes(":-(", (strings[index + 1] || "")[0]))) {
+        slowModeIndex = index;
       }
-      if (index2 >= slowModeIndex) {
+      if (index >= slowModeIndex) {
         return (interpolation) => {
-          if (index2 == slowModeIndex) {
+          if (index == slowModeIndex) {
             buffer = "";
           }
           buffer += token;
@@ -230,7 +230,7 @@ var buildStatics = (strings) => {
             buffer = "";
             parseToken(interpolation);
           }
-          if (index2 == strings.length - 1) {
+          if (index == strings.length - 1) {
             parseString(buffer);
           }
         };
@@ -255,7 +255,7 @@ var parse = (tokens) => {
   groupings = [];
   rules = [];
   if (Array.isArray(tokens[0]) && Array.isArray(tokens[0].raw)) {
-    buildStatics(tokens[0]).forEach((apply2, index2) => apply2(tokens[index2 + 1]));
+    buildStatics(tokens[0]).forEach((apply2, index) => apply2(tokens[index + 1]));
   } else {
     parseToken(tokens);
   }
@@ -323,13 +323,13 @@ var corners = /* @__PURE__ */ positions((key) => ({
 })[key]);
 var expandEdges = (key) => {
   const parts = ({ x: "lr", y: "tb" }[key] || key || "").split("").sort();
-  for (let index2 = parts.length; index2--; ) {
-    if (!(parts[index2] = {
+  for (let index = parts.length; index--; ) {
+    if (!(parts[index] = {
       t: "top",
       r: "right",
       b: "bottom",
       l: "left"
-    }[parts[index2]]))
+    }[parts[index]]))
       return;
   }
   if (parts.length)
@@ -937,7 +937,7 @@ var cssomSheet = ({
   const offset = target.cssRules.length;
   return {
     target,
-    insert: (rule, index2) => target.insertRule(rule, offset + index2)
+    insert: (rule, index) => target.insertRule(rule, offset + index)
   };
 };
 var voidSheet = () => ({
@@ -1543,11 +1543,11 @@ var translate = (plugins, context) => (rule, isTranslating) => {
   if (!isTranslating && parameters[0] == "tw" && rule.$ == rule.d) {
     return rule.$;
   }
-  for (let index2 = parameters.length; index2; index2--) {
-    const id = join(parameters.slice(0, index2));
+  for (let index = parameters.length; index; index--) {
+    const id = join(parameters.slice(0, index));
     const plugin = plugins[id];
     if (plugin) {
-      return typeof plugin == "function" ? plugin(tail(parameters, index2), context, id) : typeof plugin == "string" ? context[isTranslating ? "css" : "tw"](plugin) : plugin;
+      return typeof plugin == "function" ? plugin(tail(parameters, index), context, id) : typeof plugin == "string" ? context[isTranslating ? "css" : "tw"](plugin) : plugin;
     }
   }
 };
@@ -1576,8 +1576,8 @@ var _3;
 var responsivePrecedence = (css) => (((_3 = /(?:^|min-width: *)(\d+(?:.\d+)?)(p)?/.exec(css)) ? +_3[1] / (_3[2] ? 15 : 1) / 10 : 0) & 31) << 22;
 var seperatorPrecedence = (string) => {
   _3 = 0;
-  for (let index2 = string.length; index2--; ) {
-    _3 += includes("-:,", string[index2]);
+  for (let index = string.length; index--; ) {
+    _3 += includes("-:,", string[index]);
   }
   return _3;
 };
@@ -1687,10 +1687,10 @@ var inject = (sheet, mode2, init, context) => {
   return ({ r: css, p: presedence }) => {
     if (!insertedRules.has(css)) {
       insertedRules.add(css);
-      const index2 = sortedInsertionIndex(sortedPrecedences, presedence);
+      const index = sortedInsertionIndex(sortedPrecedences, presedence);
       try {
-        sheet.insert(css, index2);
-        sortedPrecedences.splice(index2, 0, presedence);
+        sheet.insert(css, index);
+        sortedPrecedences.splice(index, 0, presedence);
       } catch (error) {
         if (!/:-[mwo]/.test(css)) {
           mode2.report({ id: "INJECT_CSS_ERROR", css, error }, context);
@@ -1727,8 +1727,8 @@ var configure = (config = {}) => {
         ;
         (typeof rules2 == "string" ? parse([rules2]) : rules2).forEach(convert);
         const css = Object.create(null, COMPONENT_PROPS);
-        for (let index2 = lastTranslationsIndex; index2 < lastTranslations.length; index2++) {
-          const translation = lastTranslations[index2];
+        for (let index = lastTranslationsIndex; index < lastTranslations.length; index++) {
+          const translation = lastTranslations[index];
           if (translation) {
             switch (typeof translation) {
               case "object":
@@ -3567,10 +3567,10 @@ var now$1 = function() {
 var now_1 = now$1;
 var reWhitespace = /\s/;
 function trimmedEndIndex$1(string) {
-  var index2 = string.length;
-  while (index2-- && reWhitespace.test(string.charAt(index2))) {
+  var index = string.length;
+  while (index-- && reWhitespace.test(string.charAt(index))) {
   }
-  return index2;
+  return index;
 }
 var _trimmedEndIndex = trimmedEndIndex$1;
 var trimmedEndIndex = _trimmedEndIndex;
@@ -4749,9 +4749,9 @@ CancelToken.prototype.unsubscribe = function unsubscribe(listener) {
   if (!this._listeners) {
     return;
   }
-  var index2 = this._listeners.indexOf(listener);
-  if (index2 !== -1) {
-    this._listeners.splice(index2, 1);
+  var index = this._listeners.indexOf(listener);
+  if (index !== -1) {
+    this._listeners.splice(index, 1);
   }
 };
 CancelToken.source = function source() {
@@ -4950,7 +4950,7 @@ var stableHash = function(arg) {
   var constructor = arg && arg.constructor;
   var isDate2 = constructor == Date;
   var result;
-  var index2;
+  var index;
   if (OBJECT(arg) === arg && !isDate2 && constructor != RegExp) {
     result = table.get(arg);
     if (result)
@@ -4959,17 +4959,17 @@ var stableHash = function(arg) {
     table.set(arg, result);
     if (constructor == Array) {
       result = "@";
-      for (index2 = 0; index2 < arg.length; index2++) {
-        result += stableHash(arg[index2]) + ",";
+      for (index = 0; index < arg.length; index++) {
+        result += stableHash(arg[index]) + ",";
       }
       table.set(arg, result);
     }
     if (constructor == OBJECT) {
       result = "#";
       var keys = OBJECT.keys(arg).sort();
-      while (!isUndefined(index2 = keys.pop())) {
-        if (!isUndefined(arg[index2])) {
-          result += index2 + ":" + stableHash(arg[index2]) + ",";
+      while (!isUndefined(index = keys.pop())) {
+        if (!isUndefined(arg[index])) {
+          result += index + ":" + stableHash(arg[index]) + ",";
         }
       }
       table.set(arg, result);
@@ -5308,9 +5308,9 @@ var subscribeCallback = function(key, callbacks, callback) {
   var keyedRevalidators = callbacks[key] || (callbacks[key] = []);
   keyedRevalidators.push(callback);
   return function() {
-    var index2 = keyedRevalidators.indexOf(callback);
-    if (index2 >= 0) {
-      keyedRevalidators[index2] = keyedRevalidators[keyedRevalidators.length - 1];
+    var index = keyedRevalidators.indexOf(callback);
+    if (index >= 0) {
+      keyedRevalidators[index] = keyedRevalidators[keyedRevalidators.length - 1];
       keyedRevalidators.pop();
     }
   };
@@ -5889,8 +5889,4 @@ var personSearch = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.definePr
   __proto__: null,
   "default": PersonSearch
 }, Symbol.toStringTag, { value: "Module" }));
-var index = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  PersonSearch: personSearch
-}, Symbol.toStringTag, { value: "Module" }));
-export { index as PersonSearch };
+export { personSearch as PersonSearch };
