@@ -1,1 +1,2 @@
-export { PersonSearch } from './person-search';
+export * from './person-search';
+export { default } from './person-search';
